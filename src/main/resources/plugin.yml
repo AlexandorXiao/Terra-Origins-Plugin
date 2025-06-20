@@ -1,0 +1,12 @@
+name: TerraOrigins
+version: '0.15.1-Dev'
+main: dev.devill.terraOrigins.TerraOrigins
+api-version: '1.21'
+load: STARTUP
+authors: [ DeVill ]
+description: TerraOrigins by Devill for Terra
+depend: [ProtocolLib]
+commands:
+  race:
+    description: Управление расами
+    usage: /<command>
