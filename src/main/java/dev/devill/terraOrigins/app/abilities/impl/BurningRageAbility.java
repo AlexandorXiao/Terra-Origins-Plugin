@@ -44,7 +44,8 @@ public class BurningRageAbility extends Ability {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (hasAbility(player) && player.getFireTicks() > 0) {
+                    if (!hasAbility(player)) continue;
+                    if (player.getFireTicks() > 0) {
                         if (!AttributeUtils.hasAttributes(player, DAMAGE_BOOST)) {
                             AttributeUtils.applyAttributes(player, DAMAGE_BOOST);
                         }

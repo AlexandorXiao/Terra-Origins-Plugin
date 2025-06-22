@@ -40,7 +40,8 @@ public class HydrophobiaAbility extends Ability {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (hasAbility(player) && player.isInWaterOrRainOrBubbleColumn()) {
+                    if (!hasAbility(player)) continue;
+                    if (player.isInWaterOrRainOrBubbleColumn()) {
                         player.damage(WATER_DAMAGE, DAMAGE_SOURCE);
                     }
                 }

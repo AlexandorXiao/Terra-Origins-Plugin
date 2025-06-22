@@ -6,6 +6,7 @@ import org.bukkit.entity.PiglinAbstract;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.entity.EntityType;
 
 import dev.devill.terraOrigins.app.abilities.Ability;
 
@@ -18,6 +19,11 @@ import dev.devill.terraOrigins.app.abilities.annotations.*;
 @AbilityInfo(id = "brother_blood")
 public class BrotherBloodAbility extends Ability {
     private static final Set<UUID> provokedPiglins = new HashSet<>();
+
+    @ConfigKey("brother_mobs")
+    private static final Set<EntityType> peacefulMobs = Set.of(
+        EntityType.PIGLIN_BRUTE
+    );
 
     @Override
     public void onRaceSelect(Player player) {}
@@ -45,8 +51,13 @@ public class BrotherBloodAbility extends Ability {
             return;
         }
 
-        if (event.getEntity() instanceof PiglinAbstract piglin && !(piglin instanceof PiglinBrute)) {
-            if (!provokedPiglins.contains(piglin.getUniqueId())) {
+        EntityType type = event.getEntity().getType();
+        if (peacefulMobs.contains(type)) {
+            if (event.getEntity() instanceof PiglinAbstract piglin && !(piglin instanceof PiglinBrute)) {
+                if (!provokedPiglins.contains(piglin.getUniqueId())) {
+                    event.setCancelled(true);
+                }
+            } else if (!provokedPiglins.contains(event.getEntity().getUniqueId())) {
                 event.setCancelled(true);
             }
         }

@@ -50,7 +50,8 @@ public class SoulFearAbility extends Ability {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (hasAbility(player) && isNearSoulLight(player)) {
+                    if (!hasAbility(player)) continue;
+                    if (isNearSoulLight(player)) {
                         EffectUtils.applyEffects(player, SOUL_FEAR_EFFECTS);
                     }
                 }

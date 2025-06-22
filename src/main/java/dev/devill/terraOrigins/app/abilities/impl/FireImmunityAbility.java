@@ -32,9 +32,9 @@ public class FireImmunityAbility extends Ability {
 
     @EventHandler
     public void onDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(event.getEntity() instanceof Player player) || !hasAbility(player)) return;
         
-        if (hasAbility(player) && DAMAGE_CAUSES.contains(event.getCause())) {
+        if (DAMAGE_CAUSES.contains(event.getCause())) {
             event.setCancelled(true);
         }
     }

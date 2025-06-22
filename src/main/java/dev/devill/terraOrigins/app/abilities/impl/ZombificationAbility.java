@@ -43,11 +43,10 @@ public class ZombificationAbility extends Ability {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (hasAbility(player)) {
-                        Environment playerIn = player.getWorld().getEnvironment();
-                        if (ZOMBIFICATION_WORLDS.contains(playerIn)) {
-                            EffectUtils.applyEffects(player, ZOMBIFICATION_EFFECTS);
-                        }
+                    if (!hasAbility(player)) continue;
+                    Environment playerIn = player.getWorld().getEnvironment();
+                    if (ZOMBIFICATION_WORLDS.contains(playerIn)) {
+                        EffectUtils.applyEffects(player, ZOMBIFICATION_EFFECTS);
                     }
                 }
             }

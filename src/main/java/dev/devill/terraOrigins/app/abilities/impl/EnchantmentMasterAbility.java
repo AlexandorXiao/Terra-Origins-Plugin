@@ -34,30 +34,36 @@ public class EnchantmentMasterAbility extends Ability {
     public void onAbilityLoad() {}
 
     @EventHandler
-    public void onEnchantItem(EnchantItemEvent event) {
+    public void onEnchantItem(EnchantItemEvent event) {event.getEnchanter();
         if (!hasAbility(event.getEnchanter())) return;
 
         ItemStack item = event.getItem();
         Map<Enchantment, Integer> enchants = item.getEnchantments();
 
-        if (enchants.isEmpty()) return;
+        if (enchants.isEmpty()) {
+            return;
+        }
 
         Random random = new Random();
 
-        if (random.nextDouble() <= UPGRADE_CHANCE) {
-            List<Enchantment> keys = new ArrayList<>(enchants.keySet());
+        if (random.nextDouble() > UPGRADE_CHANCE) {
+            return;
+        }
 
-            int enchantmentsToUpgrade = MIN_ENCHANTMENTS + random.nextInt(keys.size());
+        List<Enchantment> enchantmentList = new ArrayList<>(enchants.keySet());
+        Collections.shuffle(enchantmentList);
 
-            Collections.shuffle(keys);
-            for (int i = 0; i < enchantmentsToUpgrade; i++) {
-                Enchantment ench = keys.get(i);
-                int currentLevel = enchants.get(ench);
-                int maxLevel = ench.getMaxLevel();
+        int enchantmentsToUpgrade = Math.min(
+            MIN_ENCHANTMENTS + random.nextInt(enchantmentList.size() + 1),
+            enchantmentList.size()
+        );
 
-                if (currentLevel < maxLevel) {
-                    item.addUnsafeEnchantment(ench, currentLevel + 1);
-                }
+        for (int i = 0; i < enchantmentsToUpgrade; i++) {
+            Enchantment enchantment = enchantmentList.get(i);
+            int currentLevel = enchants.get(enchantment);
+
+            if (currentLevel < enchantment.getMaxLevel()) {
+                item.addUnsafeEnchantment(enchantment, currentLevel + 1);
             }
         }
     }
